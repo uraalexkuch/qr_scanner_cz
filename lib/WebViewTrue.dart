@@ -37,7 +37,7 @@ class _WebViewExampleState extends State<WebViewTrue> {
     return ResponsiveSizer(builder: (context, orientation, deviceType) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Онлайн помічник'),
+          title: const Text('Сканер вакансій'),
           // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
           actions: <Widget>[
             NavigationControls(_controller.future),

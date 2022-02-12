@@ -1,14 +1,27 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
+import 'package:marquee/marquee.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:spring/spring.dart';
 
-class StartPage extends StatelessWidget {
-  final SpringController springController = SpringController();
+class StartPage extends StatefulWidget {
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,83 +44,99 @@ class StartPage extends StatelessWidget {
               ],
             ),
           ),
-          child: Column(children: [
+          child: Stack(children: <Widget>[
             Container(
-              height: 40.h,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 60),
-                  child: Column(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
+                  child: Row(
                     children: [
-                      Text(
-                        "Cаннер вакансій",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          decoration: TextDecoration.none,
-                          fontFamily: "Helvetica",
-                          fontSize: 20.sp,
-                          color: HexColor('#FFFFFF'),
-                        ),
-                        softWrap: true,
+                      Row(
+                        children: [
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 50, right: 100),
+                              child: Container(
+                                height: 30.h,
+                                child: Lottie.asset(
+                                    'image/39701-robot-bot-3d.json'
+                                    //     'https://assets7.lottiefiles.com/packages/lf20_u38thn1f.json'),
+                                    ),
+                                //Image.asset('image/animation_300_kzbpn6di.gif')
+                              )),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 500),
+                              child: Container(
+                                height: 30.h,
+                                child: Image.asset('image/logo.png'),
+                              ))
+                        ],
                       ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: 20.h,
-                            child: Lottie.asset('image/39701-robot-bot-3d.json'
-                                //     'https://assets7.lottiefiles.com/packages/lf20_u38thn1f.json'),
-                                ),
-                            //Image.asset('image/animation_300_kzbpn6di.gif')
-                          ))
                     ],
                   )),
             ),
-            Container(
+            Positioned(
+              top: 25.h,
+              left: 35.w,
               child: Center(
-                child: Spring.scale(
-                    springController: springController,
-                    start: 0.0, //required
-                    end: 1.0, //required
-                    animDuration: Duration(milliseconds: 2000), //def=1s,
-                    animStatus: (AnimStatus status) {
-                      print(status);
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    bottom: 50,
+                  ),
+                  width: 30.w,
+                  child: RaisedButton(
+                    elevation: 10.0,
+                    onPressed: () {
+                      Get.toNamed('/Home/scanner');
                     },
-                    curve: Curves.easeInOut, //def=Curves.easeInOut
-                    child: RaisedButton(
-                      elevation: 10.0,
-                      onPressed: () {
-                        Get.toNamed('/Home/scanner');
-                      },
-                      padding: const EdgeInsets.all(15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                        side: BorderSide(color: HexColor('#FFD947'), width: 3),
-                      ),
-                      color: HexColor("#005BAA"),
-                      focusColor: HexColor('#FFD947'),
-                      splashColor: HexColor('#FFD947'),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "Поїхали",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: HexColor('#FFFFFF'),
-                            ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(35.0)),
+                      side: BorderSide(color: HexColor('#FFD947'), width: 3),
+                    ),
+                    color: HexColor("#005BAA"),
+                    focusColor: HexColor('#FFD947'),
+                    splashColor: HexColor('#FFD947'),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'image/volnovaha-rayon.png',
+                          height: 20.h,
+                          width: 40.w,
+                        ),
+                        Text(
+                          "Сканувати",
+                          style: TextStyle(
+                            fontSize: 24.sp,
+                            color: HexColor('#FFFFFF'),
                           ),
-                        ],
-                      ),
-                    )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 20.h,
-                  child: Image.asset('image/qr_logo.jpg'
-                      //     'https://assets7.lottiefiles.com/packages/lf20_u38thn1f.json'),
-                      ),
-                  //Image.asset('image/animation_300_kzbpn6di.gif')
-                ))
+            Container(
+                margin: const EdgeInsets.only(
+                  top: 500,
+                ),
+                height: 20.h,
+                child: Marquee(
+                  text: 'Сканер вакансій',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: HexColor('#FFD947'),
+                      decoration: TextDecoration.none),
+                  scrollAxis: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  blankSpace: 20.0,
+                  velocity: 100.0,
+                  pauseAfterRound: Duration(seconds: 1),
+                  startPadding: 10.0,
+                  accelerationDuration: Duration(seconds: 1),
+                  accelerationCurve: Curves.linear,
+                  decelerationDuration: Duration(milliseconds: 500),
+                  decelerationCurve: Curves.easeOut,
+                )),
           ]),
         ),
       );

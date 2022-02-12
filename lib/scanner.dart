@@ -33,7 +33,7 @@ class _ScannerState extends State<Scanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Scanner"),
+        title: const Text("Сканер вакансий"),
       ),
       body: Stack(
         children: [
@@ -97,37 +97,61 @@ class _ScannerState extends State<Scanner> {
     this.controller = controller;
 
     controller.scannedDataStream.listen((scanData) async {
-      // controller.pauseCamera();
+      controller.pauseCamera();
 
       if (scanData.code != null) {
-        await controller.toggleFlash();
+        //await controller.toggleFlash();
         //await launch(scanData.code!.substring(0, 55).trim());
-        /* Get.toNamed('/Home/web',
-            arguments: scanData.code!.substring(3, 55).trim());*/
+        String intext = (scanData.code!.substring(55));
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Короткі дані'),
               content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    Text(scanData.code!.substring(55)),
-                  ],
-                ),
-              ),
+                  child: ListBody(children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: HexColor('#FFD947'), width: 3),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      intext,
+                      style: TextStyle(
+                        color: Colors.indigo,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.sp,
+                      ),
+                    ),
+                  ),
+                )
+              ])),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Отримати повну інформацію'),
+                  child: const Text(
+                    'Отримати повну інформацію',
+                    style: TextStyle(
+                        color: Colors.indigo,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
                   onPressed: () {
                     Get.toNamed('/Home/web',
                         arguments: scanData.code!.substring(3, 55).trim());
                   },
                 ),
                 TextButton(
-                  child: const Text('Повернутися'),
+                  child: const Text(
+                    'Повернутися',
+                    style: TextStyle(
+                        color: Colors.indigo,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
                   onPressed: () {
                     Get.toNamed('/Home');
+                    controller.pauseCamera();
                   },
                 ),
               ],
